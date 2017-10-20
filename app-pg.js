@@ -8,11 +8,11 @@ var PasswordGrantStrategy = require('passport-oauth2-password-grant');
 
 var passportstrategy=new PasswordGrantStrategy({
 	tokenURL: 'http://localhost:3001/api/v1/oauth/token',
-    clientID: 'democlient1',
-    clientSecret: 'democlientsecret1',
+    clientID: '',
+    clientSecret: '',
     scope:'profile',
     grant_type: 'password',
-    customHeaders: {"Authorization": "Basic ZGVtb2NsaWVudDE6ZGVtb2NsaWVudHNlY3JldDE=","scope":"profile"}
+    customHeaders: {"Authorization": "Basic =","scope":""}
 },
 function(accessToken, refreshToken, profile, done) {
     console.log("Details ",accessToken,profile);

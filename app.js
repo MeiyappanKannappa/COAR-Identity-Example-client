@@ -6,10 +6,10 @@ var http = require('http');
 var https = require('https');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var client = new OAuth2Strategy({
-    authorizationURL: 'https://localhost/login?clientId=TcMKABHMZw41&scope=karthik&redirectUri=http://localhost:8080/auth/example/callback',
+    authorizationURL: 'https://localhost/login?clientId=&scope=&redirectUri=http://localhost:8080/auth/example/callback',
     tokenURL: 'https://localhost/api/v1/oauth/token',
-    clientID: 'TcMKABHMZw41',
-    clientSecret: 'P442FaYRGWsNU4M41lo0y2MR',
+    clientID: '',
+    clientSecret: '',
     callbackURL: "http://localhost:8080/auth/example/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
