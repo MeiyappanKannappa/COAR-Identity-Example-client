@@ -4,13 +4,16 @@ const OAuth2Strategy=require('passport-oauth2')
 var passport = require('passport');
 var http = require('http');
 var https = require('https');
+var session = require('express-session');
+
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var client = new OAuth2Strategy({
-    authorizationURL: 'https://localhost/login?clientId=&scope=&redirectUri=http://localhost:8080/auth/example/callback',
+    authorizationURL: 'https://localhost/login?clientId=RyeQRWqEKuAl&scope=profile&redirectUri=http://localhost:8080/auth/loginsuccess',
     tokenURL: 'https://localhost/api/v1/oauth/token',
-    clientID: '',
-    clientSecret: '',
-    callbackURL: "http://localhost:8080/auth/example/callback"
+    clientID: 'RyeQRWqEKuAl',
+    clientSecret: 'jXsjlg1t9mDKW6k5UzzEOBHw',
+    callbackURL: "http://localhost:8080/auth/loginsuccess"
   },
   function(accessToken, refreshToken, profile, cb) {
       console.log("Inside access token ",profile);
@@ -52,7 +55,8 @@ client.userProfile = function (accesstoken, done) {
     
   };
   passport.serializeUser(function(user, done) {
-    done(null, user._id);
+      console.log("User id",user);
+    done(null, user.profileid);
     // if you use Model.id as your idAttribute maybe you'd want
     // done(null, user.id);
 });
@@ -69,20 +73,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Authentication tested for this URL
-app.get('/auth/example',
+app.get('/login',
 passport.authenticate('oauth2'));
 
 app.get('/auth/example/callback',
-passport.authenticate('oauth2', { failureRedirect: '/login',session: false }),
+passport.authenticate('oauth2', { failureRedirect: '/login',session: true }),
 function(req, res) {
   // Successful authentication, redirect home.
   res.redirect('/');
 });
-
+app.get('/auth/loginsuccess',
+passport.authenticate('oauth2', { failureRedirect: '/login',session: true }),
+function(req, res) {
+  // Successful authentication, redirect home.
+  res.redirect('/');
+});
 app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
+
+app.use(session({secret: "Shh, its a secret!"}));
 app.listen(8080, function () {
   console.log('Example app listening on port 8080!')
 })
